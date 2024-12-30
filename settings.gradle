@@ -1,0 +1,10 @@
+rootProject.name = 'goni-board'
+
+include 'common'
+include 'service'
+include 'service:article'
+include 'service:hot-article'
+include 'service:article-read'
+include 'service:view'
+include 'service:comment'
+include 'service:like'
