@@ -3,8 +3,8 @@ package goni.board.common.snowflake;
 import java.util.random.RandomGenerator;
 
 public class Snowflake {
-	private static final int UNUSED_BITS = 1;
-	private static final int EPOCH_BITS = 41;
+	// private static final int UNUSED_BITS = 1;
+	// private static final int EPOCH_BITS = 41;
 	private static final int NODE_ID_BITS = 10;
 	private static final int SEQUENCE_BITS = 12;
 
