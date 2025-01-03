@@ -31,25 +31,38 @@ public class DataInitializer {
     @Test
     void init() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < EXECUTE_COUNT; i++) {
-            executorService.submit(() -> {
-               
-                insert();
-                latch.countDown();
-                System.out.println("latch = " + latch.getCount());
-               
-            });
+        try {
+            for (int i = 0; i < EXECUTE_COUNT; i++) {
+                final int index = i;  // 람다에서 사용하기 위한 final 변수
+                executorService.submit(() -> {
+                    try {
+                        insert(index);
+                        latch.countDown();
+                        System.out.println("Inserted batch " + index + ", remaining: " + latch.getCount());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            latch.await();
+        } finally {
+            executorService.shutdown();
         }
-        latch.await();
-        executorService.shutdown();
     }
 
-    void insert() {
+    void insert(int batchIndex) {
         transactionTemplate.executeWithoutResult(status -> {
             for (int i = 0; i < BULK_INSERT_SIZE; i++) {
-                Article article = Article.create(snowflake.nextId(), "titie" + i, "content" +i, 1L, 1L);
+                Article article = Article.create(
+                    snowflake.nextId(), 
+                    "title-" + batchIndex + "-" + i, 
+                    "content-" + batchIndex + "-" + i, 
+                    1L, 
+                    1L
+                );
                 entityManager.persist(article);
             }
+            entityManager.flush();  // 명시적으로 flush 호출
         });
     }
 

@@ -7,6 +7,7 @@ import goni.board.article.entity.Article;
 import goni.board.article.repository.ArticleRepository;
 import goni.board.article.service.request.ArticleCreateRequest;
 import goni.board.article.service.request.ArticleUpdateRequest;
+import goni.board.article.service.response.ArticlePageResponse;
 import goni.board.article.service.response.ArticleResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,16 @@ public class ArticleService {
      @Transactional
      public void delete(Long articleId) {
         articleRepository.deleteById(articleId);
+     }
+
+     public ArticlePageResponse readAll(Long boardId, Long page, Long pageSize) {
+        return ArticlePageResponse.of(
+            articleRepository.findAll(boardId, (page -1) * pageSize, pageSize).stream()
+            .map(ArticleResponse::from)
+            .toList(),
+            articleRepository.count(
+                boardId, 
+                PageLimitCalculator.calculateLimit(page,pageSize,10L))
+        );
      }
 }

@@ -1,10 +1,10 @@
 package goni.board.article.api;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.core.ParameterizedTypeReference;
+
 import org.springframework.web.client.RestClient;
 
-
+import goni.board.article.service.response.ArticlePageResponse;
 import goni.board.article.service.response.ArticleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,18 +62,29 @@ public class ArticleApiTest {
                 .retrieve();
     }
 
-    // @Test
-    // void readAllTest() {
-    //     ArticlePageResponse response = restClient.get()
-    //             .uri("/v1/articles?boardId=1&pageSize=30&page=50000")
-    //             .retrieve()
-    //             .body(ArticlePageResponse.class);
+    @Test
+    void readAllTest() {
+        try {
+            ArticlePageResponse response = restClient.get()
+                    .uri("/v1/articles?boardId=1&pageSize=30&page=50000")
+                    .retrieve()
+                    .body(ArticlePageResponse.class);
 
-    //     System.out.println("response.getArticleCount() = " + response.getArticleCount());
-    //     for (ArticleResponse article : response.getArticles()) {
-    //         System.out.println("articleId = " + article.getArticleId());
-    //     }
-    // }
+            System.out.println("Response received: " + response);  // 전체 응답 출력
+            
+            if (response != null && response.getArticles() != null) {
+                System.out.println("Total articles: " + response.getArticles().size());
+                for (ArticleResponse article : response.getArticles()) {
+                    System.out.println("articleId = " + article.getArticleId());
+                }
+            } else {
+                System.out.println("No articles found or response is null");
+            }
+        } catch (Exception e) {
+            System.err.println("Error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     // @Test
     // void readAllInfiniteScrollTest() {

@@ -1,8 +1,4 @@
-server:
-  port: 9000
 spring:
-  application:
-    name: goni-board-article-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/article
@@ -10,8 +6,7 @@ spring:
     password: password
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
-    open-in-view: false
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update  # 테스트 환경에서는 update로 설정 
 
