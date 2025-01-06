@@ -30,7 +30,7 @@ public class ArticleApiTest {
 
     @Test
     void readTest() {
-        ArticleResponse response = read(121530268440289280L);
+        ArticleResponse response = read(7280746871914496001L);
         System.out.println("response = " + response);
     }
 

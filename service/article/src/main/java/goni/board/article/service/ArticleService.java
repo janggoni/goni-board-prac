@@ -53,7 +53,7 @@ public class ArticleService {
             .toList(),
             articleRepository.count(
                 boardId, 
-                PageLimitCalculator.calculateLimit(page,pageSize,10L))
+                PageLimitCalculator.calculatePageLimit(page,pageSize,10L))
         );
      }
 }
