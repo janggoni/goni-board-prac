@@ -1,2 +1,17 @@
 server:
   port: 9001
+  application:
+    name: goni-board-comment-service
+  spring:
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/comment
+      username: root
+      password: password
+    jpa:
+      database-platform: org.hibernate.dialect.MySQLDialect
+      show-sql: true
+      hibernate:
+        ddl-auto: update  # 테스트 환경에서는 update로 설정
+
+

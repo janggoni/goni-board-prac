@@ -1,5 +1,6 @@
 package goni.board.article.service;
 
+
 import org.springframework.stereotype.Service;
 
 import goni.board.common.snowflake.Snowflake;
@@ -11,6 +12,8 @@ import goni.board.article.service.response.ArticlePageResponse;
 import goni.board.article.service.response.ArticleResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,14 +49,22 @@ public class ArticleService {
         articleRepository.deleteById(articleId);
      }
 
-     public ArticlePageResponse readAll(Long boardId, Long page, Long pageSize) {
+    public ArticlePageResponse readAll(Long boardId, Long page, Long pageSize) {
         return ArticlePageResponse.of(
-            articleRepository.findAll(boardId, (page -1) * pageSize, pageSize).stream()
-            .map(ArticleResponse::from)
-            .toList(),
-            articleRepository.count(
-                boardId, 
-                PageLimitCalculator.calculatePageLimit(page,pageSize,10L))
+                articleRepository.findAll(boardId, (page - 1) * pageSize, pageSize).stream()
+                        .map(ArticleResponse::from)
+                        .toList(),
+                articleRepository.count(
+                        boardId,
+                        PageLimitCalculator.calculatePageLimit(page, pageSize, 10L)
+                )
         );
-     }
+    }
+    public List<ArticleResponse> readAllInfiniteScroll(Long boardId, Long pageSize, Long lastArticleId) {
+        List<Article> articles = lastArticleId == null ?
+                articleRepository.findAllInfiniteScroll(boardId, pageSize) :
+                articleRepository.findAllInfiniteScroll(boardId, pageSize, lastArticleId);
+        return articles.stream().map(ArticleResponse::from).toList();
+    }
+
 }
