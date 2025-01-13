@@ -1,6 +1,8 @@
 package goni.board.comment.service.response;
 
+import jakarta.persistence.Id;
 import goni.board.comment.entity.Comment;
+import goni.board.comment.entity.CommentV2;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -30,15 +32,15 @@ public class CommentResponse {
         return response;
     }
 
-//    public static CommentResponse from(CommentV2 comment) {
-//        CommentResponse response = new CommentResponse();
-//        response.commentId = comment.getCommentId();
-//        response.content = comment.getContent();
-//        response.path = comment.getCommentPath().getPath();
-//        response.articleId = comment.getArticleId();
-//        response.writerId = comment.getWriterId();
-//        response.deleted = comment.getDeleted();
-//        response.createdAt = comment.getCreatedAt();
-//        return response;
-//    }
+    public static CommentResponse from(CommentV2 comment) {
+        CommentResponse response = new CommentResponse();
+        response.commentId = comment.getCommentId();
+        response.content = comment.getContent();
+        response.path = comment.getCommentPath().getPath();
+        response.articleId = comment.getArticleId();
+        response.writerId = comment.getWriterId();
+        response.deleted = comment.getDeleted();
+        response.createdAt = comment.getCreatedAt();
+        return response;
+    }
 }

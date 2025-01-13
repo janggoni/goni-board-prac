@@ -3,14 +3,16 @@ package goni.board.comment.service;
 import goni.board.comment.entity.Comment;
 import goni.board.comment.repository.CommentRepository;
 import goni.board.comment.service.request.CommentCreateRequest;
+import goni.board.comment.service.response.CommentPageResponse;
 import goni.board.comment.service.response.CommentResponse;
 import goni.board.common.snowflake.Snowflake;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.function.Predicate;
+
+import static java.util.function.Predicate.not;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class CommentService {
             return null;
         }
         return commentRepository.findById(parentCommentId)
-                .filter(Predicate.not(Comment::getDeleted))
+                .filter(not(Comment::getDeleted))
                 .filter(Comment::isRoot)
                 .orElseThrow();
     }
@@ -53,7 +55,7 @@ public class CommentService {
     @Transactional
     public void delete(Long commentId) {
         commentRepository.findById(commentId)
-                .filter(Predicate.not(Comment::getDeleted))
+                .filter(not(Comment::getDeleted))
                 .ifPresent(comment -> {
                     if (hasChildren(comment)) {
                         comment.delete();
@@ -72,19 +74,19 @@ public class CommentService {
         if (!comment.isRoot()) {
             commentRepository.findById(comment.getParentCommentId())
                     .filter(Comment::getDeleted)
-                    .filter(Predicate.not(this::hasChildren))
+                    .filter(not(this::hasChildren))
                     .ifPresent(this::delete);
         }
     }
 
-//    public CommentPageResponse readAll(Long articleId, Long page, Long pageSize) {
-//        return CommentPageResponse.of(
-//                commentRepository.findAll(articleId, (page - 1) * pageSize, pageSize).stream()
-//                        .map(CommentResponse::from)
-//                        .toList(),
-//                commentRepository.count(articleId, PageLimitCalculator.calculatePageLimit(page, pageSize, 10L))
-//        );
-//    }
+    public CommentPageResponse readAll(Long articleId, Long page, Long pageSize) {
+        return CommentPageResponse.of(
+                commentRepository.findAll(articleId, (page - 1) * pageSize, pageSize).stream()
+                        .map(CommentResponse::from)
+                        .toList(),
+                commentRepository.count(articleId, PageLimitCalculator.calculatePageLimit(page, pageSize, 10L))
+        );
+    }
 
     public List<CommentResponse> readAll(Long articleId, Long lastParentCommentId, Long lastCommentId, Long limit) {
         List<Comment> comments = lastParentCommentId == null || lastCommentId == null ?
@@ -94,4 +96,5 @@ public class CommentService {
                 .map(CommentResponse::from)
                 .toList();
     }
+
 }
