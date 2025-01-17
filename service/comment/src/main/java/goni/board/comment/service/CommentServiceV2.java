@@ -46,12 +46,12 @@ public class CommentServiceV2 {
                 )
         );
 
-//        int result = articleCommentCountRepository.increase(request.getArticleId());
-//        if (result == 0) {
-//            articleCommentCountRepository.save(
-//                    ArticleCommentCount.init(request.getArticleId(), 1L)
-//            );
-//        }
+        int result = articleCommentCountRepository.increase(request.getArticleId());
+        if (result == 0) {
+            articleCommentCountRepository.save(
+                    ArticleCommentCount.init(request.getArticleId(), 1L)
+            );
+        }
 
 //        outboxEventPublisher.publish(
 //                EventType.COMMENT_CREATED,
