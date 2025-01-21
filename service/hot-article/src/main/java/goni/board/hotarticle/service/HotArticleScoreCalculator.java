@@ -6,6 +6,7 @@ import goni.board.hotarticle.repository.ArticleViewCountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+//인기글 점수 계산
 @Component
 @RequiredArgsConstructor
 public class HotArticleScoreCalculator {

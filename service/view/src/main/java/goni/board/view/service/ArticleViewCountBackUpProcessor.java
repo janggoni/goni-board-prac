@@ -1,8 +1,8 @@
 package goni.board.view.service;
 
-//import goni.board.common.event.EventType;
-//import goni.board.common.event.payload.ArticleViewedEventPayload;
-//import goni.board.common.outboxmessagerelay.OutboxEventPublisher;
+import goni.board.common.event.EventType;
+import goni.board.common.event.payload.ArticleViewedEventPayload;
+import goni.board.common.outboxmessagerelay.OutboxEventPublisher;
 import goni.board.view.entity.ArticleViewCount;
 import goni.board.view.repository.ArticleViewCountBackUpRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 public class ArticleViewCountBackUpProcessor {
-//    private final OutboxEventPublisher outboxEventPublisher;
+    private final OutboxEventPublisher outboxEventPublisher;
     private final ArticleViewCountBackUpRepository articleViewCountBackUpRepository;
 
     @Transactional
@@ -25,13 +25,13 @@ public class ArticleViewCountBackUpProcessor {
                     );
         }
 
-//        outboxEventPublisher.publish(
-//                EventType.ARTICLE_VIEWED,
-//                ArticleViewedEventPayload.builder()
-//                        .articleId(articleId)
-//                        .articleViewCount(viewCount)
-//                        .build(),
-//                articleId
-//        );
+        outboxEventPublisher.publish(
+                EventType.ARTICLE_VIEWED,
+                ArticleViewedEventPayload.builder()
+                        .articleId(articleId)
+                        .articleViewCount(viewCount)
+                        .build(),
+                articleId
+        );
     }
 }

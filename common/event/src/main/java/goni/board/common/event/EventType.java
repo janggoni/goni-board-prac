@@ -30,7 +30,7 @@ public enum EventType {
             return null;
         }
     }
-
+    // 이벤트 타입 서비스 토픽별로 지정
     public static class Topic {
         public static final String GONI_BOARD_ARTICLE = "goni-board-article";
         public static final String GONI_BOARD_COMMENT = "goni-board-comment";
