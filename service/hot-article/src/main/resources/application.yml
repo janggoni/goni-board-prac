@@ -1,8 +1,7 @@
-server:
-  port: 9005
+server.port: 9004
 spring:
   application:
-    name: goni-hot-article-service
+    name: goni-board-hot-article-service
   data:
     redis:
       host: 127.0.0.1

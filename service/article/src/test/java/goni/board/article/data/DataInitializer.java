@@ -16,7 +16,8 @@ import jakarta.persistence.PersistenceContext;
 
 @SpringBootTest
 public class DataInitializer {
-
+    // 엔티티 매니저 주입시 씀
+    // autowired와의 차이는 jpa에 의해 관리되고 표준방식
     @PersistenceContext
     EntityManager entityManager;
 

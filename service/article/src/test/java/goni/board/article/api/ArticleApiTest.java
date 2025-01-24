@@ -95,6 +95,7 @@ public class ArticleApiTest {
         List<ArticleResponse> articles2 = restClient.get()
                 .uri("/v1/articles/infinite-scroll?boardId=1&pageSize=5&lastArticleId=%s".formatted(lastArticleId))
                 .retrieve()
+                // 제네릭 타입 정보를 알기위해
                 .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
                 });
 
